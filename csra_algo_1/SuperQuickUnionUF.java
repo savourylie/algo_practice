@@ -52,6 +52,15 @@ public class SuperQuickUnionUF {
         squuf.union(3, 7);
         squuf.union(3, 8);
         squuf.union(5, 7);
+        
+        System.out.println(squuf.connected(2, 3) == true);
+        System.out.println(squuf.connected(2, 8) == true);
+        System.out.println(squuf.connected(8, 7) == true);
+        System.out.println(squuf.connected(4, 9) == false);
+        System.out.println(squuf.connected(1, 0) == false);
+        System.out.println(squuf.connected(5, 1) == false);
+      
+        System.out.println("All tests passed.");
     };
     
 }

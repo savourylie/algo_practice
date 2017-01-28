@@ -4,39 +4,36 @@ import java.lang.IllegalArgumentException;
 import java.util.Random;
 
 public class PercolationStats {
-    int matrixShape;
-    int trials;
-    double[] thresholds;
-    double matrixSize;
+    private double[] thresholds;
+    private double matrixSize;
         
     public PercolationStats(int n, int trials) {
         if (n <= 0 || trials <= 0) {
             IllegalArgumentException e = new IllegalArgumentException();
             throw e;
         }
-        
-        matrixShape = n;
+       
         matrixSize = n * n;
-                
-        trials = trials;
+        
         thresholds = new double[trials];
         
         int num_iter = 1;
         double rate = 0;
-        double matrixSize = n * n;
+        matrixSize = n * n;
         
         for (int i = 0; i < trials; ++i) {
             Percolation percolation = new Percolation(n);
             
             while (!percolation.percolates()) {
-                int rnd = new Random().nextInt(n*n);
-                rnd += 2;
-                int[] coord2D = percolation.coordConvert1D_2D(rnd);
-                
-                percolation.open(coord2D[0] + 1, coord2D[1] + 1);                                
+//                int rnd = new Random().nextInt(n*n);
+//                rnd += 2;
+//                int[] coord2D = percolation.coordConvert1D_2D(rnd);
+//                
+//                percolation.open(coord2D[0] + 1, coord2D[1] + 1);  
+                percolation.open(new Random().nextInt(n) + 1, new Random().nextInt(n) + 1);
             }
             
-            thresholds[i] = percolation.numOpenSites / matrixSize;
+            thresholds[i] = percolation.numberOfOpenSites() / matrixSize;
 //            rate = rate + percolation.numOpenSites / matrixSize;
         }
         

@@ -5,10 +5,10 @@ import java.lang.IllegalArgumentException;
     
 
 public class Percolation {
-    SuperQuickUnionUF sites;
-    boolean[] siteStatusArray;
-    int matrixShape;
-    int numOpenSites;
+    private SuperQuickUnionUF sites;
+    private boolean[] siteStatusArray;
+    private int matrixShape;
+    private int numOpenSites;
     
     public Percolation(int n) {              // create n-by-n grid, with all sites blocked
         if (n <= 0) {
@@ -29,7 +29,7 @@ public class Percolation {
         numOpenSites = 0; //
     };
     
-    public int[] coordConvert1D_2D(int index) {
+    private int[] coordConvert1D_2D(int index) {
         int[] coord2D = new int[2];
         coord2D[0] = (index - 2) / matrixShape;
         coord2D[1] = (index - 2) % matrixShape;
@@ -37,7 +37,7 @@ public class Percolation {
         return coord2D;
     }
     
-    public int coordConvert2D_1D(int[] coords) {
+    private int coordConvert2D_1D(int[] coords) {
         int coord1D;
         coord1D = coords[0] * matrixShape + coords[1] + 2;
         
@@ -197,55 +197,56 @@ public class Percolation {
         System.out.println(rate_avg);
         
     };   // test client (optional)
-}
-
-class SuperQuickUnionUF {
-    private int[] id;
-    private int[] size;
     
-    public SuperQuickUnionUF(int N) {
-//        System.out.println(N);
-        id = new int[N];
-        size = new int[N];
+    private class SuperQuickUnionUF {
+        private int[] id;
+        private int[] size;
         
-        for (int i = 0; i < N; i++) {
-            id[i] = i;
-            size[i] = 1;
-        }
-    };
-    
-    private int root(int i) {
-//        System.out.println(i);
-        while (id[i] != i) {
-            id[i] = id[id[i]];
-            i = id[i];
+        public SuperQuickUnionUF(int N) {
+//        System.out.println(N);
+            id = new int[N];
+            size = new int[N];
+            
+            for (int i = 0; i < N; i++) {
+                id[i] = i;
+                size[i] = 1;
+            }
         };
         
-        return i;
-    };
-    
-    public boolean connected(int p, int q) {
-        return root(p) == root(q);
-    };
-    
-    public void union(int p, int q) {
+        private int root(int i) {
+//        System.out.println(i);
+            while (id[i] != i) {
+                id[i] = id[id[i]];
+                i = id[i];
+            };
             
-        int p_root = root(p);
-        int q_root = root(q);
+            return i;
+        };
         
-        if (p_root == q_root) {
-            return;
+        public boolean connected(int p, int q) {
+            return root(p) == root(q);
+        };
+        
+        public void union(int p, int q) {
+            
+            int p_root = root(p);
+            int q_root = root(q);
+            
+            if (p_root == q_root) {
+                return;
+            }
+            
+            if (size[p_root] > size[q_root]) {
+                id[q_root] = p_root;
+                size[p_root] += size[q_root];
+            }
+            
+            else {
+                id[p_root] = q_root;
+                size[q_root] += size[p_root];
+            }    
         }
-        
-        if (size[p_root] > size[q_root]) {
-            id[q_root] = p_root;
-            size[p_root] += size[q_root];
-        }
-        
-        else {
-            id[p_root] = q_root;
-            size[q_root] += size[p_root];
-        }    
-    }
     
+    }
 }
+

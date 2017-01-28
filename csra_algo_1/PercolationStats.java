@@ -1,6 +1,5 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
-import java.lang.IllegalArgumentException;
 import java.util.Random;
 
 public class PercolationStats {
@@ -53,11 +52,11 @@ public class PercolationStats {
     }                        // sample standard deviation of percolation threshold
     
     public double confidenceLo() {
-        return mean() - 1.96 * stddev();
+        return mean() - 1.96 * stddev() / Math.sqrt(thresholds.length);
     }                  // low  endpoint of 95% confidence interval
     
     public double confidenceHi() {
-        return mean() + 1.96 * stddev();
+        return mean() + 1.96 * stddev() / Math.sqrt(thresholds.length);
     }                  // high endpoint of 95% confidence interval
    
     public static void main(String[] args) {

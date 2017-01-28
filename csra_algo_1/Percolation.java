@@ -1,8 +1,6 @@
-import java.util.Random;
-import java.util.Arrays;
-import java.lang.IndexOutOfBoundsException;
-import java.lang.IllegalArgumentException;
-    
+import java.util.Random;    
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 public class Percolation {
     private SuperQuickUnionUF sites;
@@ -50,6 +48,11 @@ public class Percolation {
             throw e;
         }
         
+        if (row < 1 || col < 1) {
+            IndexOutOfBoundsException e = new IndexOutOfBoundsException();
+            throw e;
+        }
+        
         row = row - 1;
         col = col - 1;
         
@@ -63,7 +66,7 @@ public class Percolation {
 //        System.out.println(coord1D);
         
         // Open the appointed site
-        if (siteStatusArray[coord1D] == false) {
+        if (!siteStatusArray[coord1D]) {
             siteStatusArray[coord1D] = true;
             ++numOpenSites;
 
@@ -132,6 +135,11 @@ public class Percolation {
             throw e;
         }
         
+        if (row < 1 || col < 1) {
+            IndexOutOfBoundsException e = new IndexOutOfBoundsException();
+            throw e;
+        }
+        
         row = row - 1;
         col = col - 1;
             
@@ -147,6 +155,11 @@ public class Percolation {
     
     public boolean isFull(int row, int col) {
         if (row > matrixShape || col > matrixShape) {
+            IndexOutOfBoundsException e = new IndexOutOfBoundsException();
+            throw e;
+        }
+        
+        if (row < 1 || col < 1) {
             IndexOutOfBoundsException e = new IndexOutOfBoundsException();
             throw e;
         }

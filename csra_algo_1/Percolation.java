@@ -1,5 +1,8 @@
 import java.util.Random;
 import java.util.Arrays;
+import java.lang.IndexOutOfBoundsException;
+import java.lang.IllegalArgumentException;
+    
 
 public class Percolation {
     SuperQuickUnionUF sites;
@@ -8,6 +11,11 @@ public class Percolation {
     int numOpenSites;
     
     public Percolation(int n) {              // create n-by-n grid, with all sites blocked
+        if (n <= 0) {
+            IllegalArgumentException e = new IllegalArgumentException();
+            throw e;
+        }
+            
         matrixShape = n;
         sites = new SuperQuickUnionUF(n*n + 2);
         siteStatusArray = new boolean[n*n + 2];
@@ -21,7 +29,7 @@ public class Percolation {
         numOpenSites = 0; //
     };
     
-    private int[] coordConvert1D_2D(int index) {
+    public int[] coordConvert1D_2D(int index) {
         int[] coord2D = new int[2];
         coord2D[0] = (index - 2) / matrixShape;
         coord2D[1] = (index - 2) % matrixShape;
@@ -29,7 +37,7 @@ public class Percolation {
         return coord2D;
     }
     
-    private int coordConvert2D_1D(int[] coords) {
+    public int coordConvert2D_1D(int[] coords) {
         int coord1D;
         coord1D = coords[0] * matrixShape + coords[1] + 2;
         
@@ -37,6 +45,14 @@ public class Percolation {
     };
 
     public void open(int row, int col) {
+        if (row > matrixShape || col > matrixShape) {
+            IndexOutOfBoundsException e = new IndexOutOfBoundsException();
+            throw e;
+        }
+        
+        row = row - 1;
+        col = col - 1;
+        
         int coord1D;
         int[] coord2D = new int[2];
         
@@ -111,6 +127,14 @@ public class Percolation {
     };    // open site (row, col) if it is not open already
     
     public boolean isOpen(int row, int col) {
+        if (row > matrixShape || col > matrixShape) {
+            IndexOutOfBoundsException e = new IndexOutOfBoundsException();
+            throw e;
+        }
+        
+        row = row - 1;
+        col = col - 1;
+            
         int coord1D;
         int[] coord2D = new int[2];
         coord2D[0] = row;
@@ -122,6 +146,14 @@ public class Percolation {
     };  // is site (row, col) open?
     
     public boolean isFull(int row, int col) {
+        if (row > matrixShape || col > matrixShape) {
+            IndexOutOfBoundsException e = new IndexOutOfBoundsException();
+            throw e;
+        }
+        
+        row = row - 1;
+        col = col - 1;
+        
         int coord1D;
         int[] coord2D = new int[2];
         coord2D[0] = row;
@@ -141,7 +173,7 @@ public class Percolation {
 
     public static void main(String[] args) {
         int n = 60;
-        int num_iter = 1000;
+        int num_iter = 1;
         double rate = 0;
         double matrixSize = n * n;
         
@@ -153,11 +185,14 @@ public class Percolation {
                 rnd += 2;
                 int[] coord2D = percolation.coordConvert1D_2D(rnd);
                 
-                percolation.open(coord2D[0], coord2D[1]);                                
+                percolation.open(coord2D[0] + 1, coord2D[1] + 1);                                
             }
             
-            rate = rate + percolation.numOpenSites / matrixSize; 
+            rate = rate + percolation.numOpenSites / matrixSize;
         }
+        
+        
+        
         double rate_avg = rate / num_iter;
         System.out.println(rate_avg);
         
@@ -194,9 +229,6 @@ class SuperQuickUnionUF {
     };
     
     public void union(int p, int q) {
-//        System.out.println("WTF");
-//        System.out.println(p);
-//        System.out.println(q);
             
         int p_root = root(p);
         int q_root = root(q);
